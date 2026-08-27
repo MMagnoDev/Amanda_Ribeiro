@@ -1,5 +1,5 @@
 /* 1. Fontes e variáveis */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Urbanist:ital,wght@0,200;0,300;0,400;0,500;1,300;1,400&display=swap');
+/* Google Fonts carregadas via <link> no HTML para evitar bloqueio de renderização pelo @import no CSS */
 
 :root {
   --color-bg: #f5f9fa; /* fundo principal suave, quase branco */
@@ -132,6 +132,8 @@ button, input, select, textarea {
   background: var(--color-accent-soft);
   filter: blur(140px);
   opacity: 0.4;
+  will-change: transform;
+  transform: translate3d(0, 0, 0); /* Força aceleração de hardware GPU no Safari */
 }
 
 .bg-blur-1 {

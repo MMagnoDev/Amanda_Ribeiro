@@ -34,7 +34,7 @@
 
     <!-- Monograma Centralizado de Fundo -->
     <div class="monogram" aria-hidden="true">
-      <img src="logo.png" alt="Logo de Fundo" class="monogram-img">
+      <img src="logo.webp" alt="Logo de Fundo" class="monogram-img" loading="lazy">
     </div>
 
     <!-- 1. HERO SECTION (Full-bleed Split) -->
@@ -66,7 +66,7 @@
         <!-- Sub-header interno da Hero -->
         <div class="hero-split-header">
           <div class="hero-split-brand">
-            <img src="logotipo.png" alt="Lívia Bon" class="logotipo-img">
+            <img src="logotipo.webp" alt="Lívia Bon" class="logotipo-img">
           </div>
           <div class="hero-split-location">
             <span class="location-line"></span>
@@ -372,38 +372,56 @@
   </div>
 
   <!-- Lenis Smooth Scroll -->
-  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
   <script>
     // 1. Lenis Smooth Scroll Configuration
     let lenis;
     try {
-      lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        smoothTouch: false
-      });
+      // Bypassar Lenis em dispositivos móveis/toque para usar o scroll nativo suave e otimizado
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
 
-      function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
-      requestAnimationFrame(raf);
-
-      // Sincronizar cliques em links âncora internos com o Lenis
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          const targetId = this.getAttribute('href');
-          if (targetId === '#') return;
-
-          const target = document.querySelector(targetId);
-          if (target) {
-            e.preventDefault();
-            lenis.scrollTo(target);
-          }
+      if (!isMobile) {
+        lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          smoothTouch: false
         });
-      });
+
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Sincronizar cliques em links âncora internos com o Lenis
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const target = document.querySelector(targetId);
+            if (target) {
+              e.preventDefault();
+              lenis.scrollTo(target);
+            }
+          });
+        });
+      } else {
+        // Fallback padrão do navegador para mobile (scroll nativo fluido)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            const target = document.querySelector(targetId);
+            if (target) {
+              e.preventDefault();
+              target.scrollIntoView({ behavior: 'smooth' });
+            }
+          });
+        });
+      }
     } catch (e) {
       console.warn("Falha ao carregar ou configurar Lenis:", e);
       // Fallback padrão do navegador se falhar
