@@ -42,7 +42,7 @@
 
       <!-- Coluna Esquerda: Imagem Full-bleed com overlays -->
       <div class="hero-split-image-col fade-in-up">
-        <img src="img hero.jpg" alt="Lívia Bon" class="hero-split-img" fetchpriority="high">
+        <img src="img_hero.webp" alt="Lívia Bon" class="hero-split-img" fetchpriority="high">
 
         <!-- Overlay superior esquerdo -->
         <div class="hero-image-tagline">
@@ -148,7 +148,7 @@
 
           <div class="sobre-image-container">
             <div class="sobre-image-wrapper">
-              <img src="sobre_mim.jpg" alt="Lívia Bon" loading="lazy">
+              <img src="sobre_mim.webp" alt="Lívia Bon" loading="lazy">
             </div>
           </div>
 
@@ -175,7 +175,7 @@
         <div class="split-grid">
 
           <div class="split-image-container">
-            <img src="img_usar.jpg" alt="Lívia Bon - Atendimento e consultoria" class="split-image" loading="lazy">
+            <img src="img_usar.webp" alt="Lívia Bon - Atendimento e consultoria" class="split-image" loading="lazy">
           </div>
 
           <div class="split-content">
@@ -237,7 +237,7 @@
             <p class="section-lead">Uma atuação que une comportamento humano e gestão empresarial para impulsionar
               resultados sustentáveis.</p>
             <div class="split-image-container" style="margin-top: 32px;">
-              <img src="metodologia_image.jpg" alt="Escrita analítica em caderno" class="split-image" loading="lazy">
+              <img src="metodologia_image.webp" alt="Escrita analítica em caderno" class="split-image" loading="lazy">
             </div>
           </div>
 
@@ -317,7 +317,7 @@
 
           <!-- Imagem Horizontal Banner -->
           <div class="cta-image-container">
-            <img src="contato_image.jpeg" alt="Sala de reuniões minimalista" class="cta-image" loading="lazy">
+            <img src="contato_image.webp" alt="Sala de reuniões minimalista" class="cta-image" loading="lazy">
           </div>
 
           <!-- Conteúdo Textual -->
@@ -440,7 +440,16 @@
     // 3. Reveal Elements on Scroll (Intersection Observer)
     const revealElements = () => {
       const isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (isReducedMotion) return;
+      if (isReducedMotion) {
+        document.querySelectorAll(".reveal").forEach(el => el.classList.add("active"));
+        return;
+      }
+
+      if (!window.IntersectionObserver) {
+        // Fallback para dispositivos sem suporte ao IntersectionObserver (garante exibição do conteúdo)
+        document.querySelectorAll(".reveal").forEach(el => el.classList.add("active"));
+        return;
+      }
 
       const observerOptions = {
         threshold: 0.15,
@@ -470,6 +479,8 @@
       const ctaSection = document.querySelector("#cta-final");
 
       if (!whatsappBtn || !ctaSection) return;
+
+      if (!window.IntersectionObserver) return; // Ignora se o IntersectionObserver não estiver disponível
 
       const ctaObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
