@@ -1231,6 +1231,10 @@ button, input, select, textarea {
     font-size: 2.5rem;
   }
 
+  .hero-split-footer {
+    justify-content: center;
+  }
+
   .btn-group {
     justify-content: center;
   }
